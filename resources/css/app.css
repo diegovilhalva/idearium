@@ -1,0 +1,28 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+@theme inline {
+    --color-primary: #1a8917;
+    --color-secondary: #2d2d2d;
+    --color-accent: #ffc017;
+    --color-paragraph: #292929;
+}
+
+body {
+    @apply bg-neutral-50;
+
+
+
+}
+
+@layer base {
+    .custom-input {
+        @apply border-gray-300 focus:border-primary focus:ring-2 focus:ring-primary rounded-lg transition;
+    }
+
+    .btn-primary {
+        @apply bg-primary text-white font-medium rounded-full px-6 py-3 hover:bg-[#156612] transition-colors;
+    }
+}

@@ -5,74 +5,32 @@
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6">
                     <h2 class="text-2xl font-serif font-bold text-secondary mb-4">Explore por Categorias</h2>
-                    <ul class="flex flex-wrap gap-3">
-                        @foreach ($categories as $category)
-                        <li>
-                            <a href="#" 
-                               class="inline-block px-4 py-2 text-primary bg-primary/10 hover:bg-primary/20 rounded-full transition-colors duration-200 border border-primary/20">
-                                {{ $category->name }}
-                              
-                            </a>
-                        </li>
-                        @endforeach
-                    </ul>
+                    
+                        <x-category-list/>
+                    
                 </div>
             </div>
 
             <!-- Posts -->
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 @foreach($posts as $post)
-                <article class="bg-white overflow-hidden shadow-sm rounded-lg hover:shadow-md transition-shadow duration-200">
-                    <a href="{{ route('posts.show', $post->slug) }}" class="block">
-                        @if($post->image)
-                        <img class="w-full h-48 object-cover" 
-                             src="{{ asset('storage/' . $post->image) }}" 
-                             alt="{{ $post->title }}">
-                        @else
-                        <div class="w-full h-48 bg-gray-100 flex items-center justify-center">
-                            <span class="text-gray-400">Sem imagem</span>
-                        </div>
-                        @endif
-                    </a>
-                    
-                    <div class="p-6">
-                        <div class="mb-3 flex items-center justify-between">
-                            <a href="{{ route('categories.show', $post->category->slug) }}" 
-                               class="text-sm text-primary hover:text-secondary transition-colors">
-                                {{ $post->category->name }}
-                            </a>
-                            <time datetime="{{ $post->published_at->toDateString() }}" 
-                                  class="text-sm text-gray-500">
-                                {{ $post->published_at->translatedFormat('d M Y') }}
-                            </time>
-                        </div>
-                        
-                        <a href="{{ route('posts.show', $post->slug) }}">
-                            <h3 class="text-xl font-serif font-bold text-secondary mb-2 leading-tight">
-                                {{ $post->title }}
-                            </h3>
-                        </a>
-                        
-                        <p class="text-gray-600 mb-4 line-clamp-3">
-                            {{ Str::limit(strip_tags($post->content), 150) }}
-                        </p>
-                        
-                        <div class="flex items-center justify-between">
-                            <a href="{{ route('posts.show', $post->slug) }}" 
-                               class="inline-flex items-center text-primary hover:text-secondary transition-colors">
-                                Ler artigo completo
-                                <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
-                                </svg>
-                            </a>
-                            <div class="text-sm text-gray-500">
-                                Por {{ $post->user->name }}
-                            </div>
-                        </div>
-                    </div>
-                </article>
+                <x-post-item :post="$post"></x-post-item>
                 @endforeach
             </div>
+            @if (count($posts) === 0)
+                <div class="flex items-center justify-center">
+                    <div class="text-center space-y-4 mt-6">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-16 h-16 text-gray-400 mx-auto" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 17v-6h6v6m2 4H7a2 2 0 01-2-2V7a2 2 0 012-2h3l2-2h2l2 2h3a2 2 0 012 2v12a2 2 0 01-2 2z" />
+                        </svg>
+                        <h3 class="text-2xl font-serif font-bold text-secondary">Nenhum post encontrado</h3>
+                        <p class="text-gray-600 max-w-md">
+                            Nossos escritores estão preparando novos conteúdos incríveis.<br>
+                            Volte em breve para explorar novos artigos!
+                        </p>
+                    </div>
+                </div>
+            @endif
 
             <!-- Paginação -->
             <div class="mt-8">

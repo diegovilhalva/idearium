@@ -13,12 +13,12 @@ class PostController extends Controller
      */
     public function index()
     {
-        $categories = Category::get();
+        
         $posts = Post::with(['category'])
         ->whereNotNull('published_at')
         ->latest('published_at')
         ->paginate(9);
-        return view('dashboard', ['categories' => $categories, 'posts' => $posts]);
+        return view('dashboard', ['posts' => $posts]);
     }
 
     /**

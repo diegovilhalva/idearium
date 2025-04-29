@@ -33,7 +33,7 @@
 
                         <!-- Navigation Links -->
                         <div class="hidden sm:flex sm:items-center space-x-6 gap-2">
-                            <a href="{{ route('dashboard') }}" class="text-gray-500 hover:text-primary transition">Dashboard</a>
+                            
                             <!-- Settings Dropdown -->
                             <x-dropdown align="right" width="48">
                                 <x-slot name="trigger">
@@ -79,11 +79,7 @@
 
                 <!-- Responsive Navigation Menu -->
                 <div class="sm:hidden" x-show="open" @click.away="open = false">
-                    <div class="pt-2 pb-3 space-y-1">
-                        <x-responsive-nav-link href="{{ route('dashboard') }}" :active="request()->routeIs('dashboard')">
-                        Dashboard
-                        </x-responsive-nav-link>
-                    </div>
+                    
 
                     <!-- Responsive Settings Options -->
                     <div class="pt-4 pb-1 border-t border-gray-200">

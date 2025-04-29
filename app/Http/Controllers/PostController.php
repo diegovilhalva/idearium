@@ -18,7 +18,7 @@ class PostController extends Controller
         ->whereNotNull('published_at')
         ->latest('published_at')
         ->paginate(9);
-        return view('dashboard', ['posts' => $posts]);
+        return view('post.index', ['posts' => $posts]);
     }
 
     /**

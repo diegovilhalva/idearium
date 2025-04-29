@@ -27,3 +27,15 @@ body {
     }
     
 }
+
+
+.scroll-x-padding {
+    scroll-padding-left: 1rem;
+  }
+  
+  @media (min-width: 640px) {
+    .scroll-x-padding {
+      scroll-padding-left: 0;
+    }
+  }
+  

@@ -11,7 +11,7 @@
                 </div>
 
                 <!-- Navigation Links -->
-               x
+               
             </div>
 
             <!-- Settings Dropdown -->

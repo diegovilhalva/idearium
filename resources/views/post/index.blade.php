@@ -32,7 +32,7 @@
 
             <!-- Paginação -->
             <div class="mt-8">
-                {{ $posts->links() }}
+                {{ $posts->links('vendor.pagination.tailwind') }}
             </div>
         </div>
     </div>

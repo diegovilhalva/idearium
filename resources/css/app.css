@@ -44,3 +44,12 @@ body {
 .trix-button-group--file-tools {
     display: none !important;
 }
+
+
+.transition-colors {
+    transition: all 0.2s ease-in-out;
+}
+
+.hover\:bg-gray-50:hover {
+    background-color: rgba(241, 245, 249, 0.5);
+}

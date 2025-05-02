@@ -53,3 +53,29 @@ body {
 .hover\:bg-gray-50:hover {
     background-color: rgba(241, 245, 249, 0.5);
 }
+
+.prose {
+    h2, h3 {
+        @apply font-serif text-secondary;
+    }
+    
+    blockquote {
+        @apply border-l-4 border-primary/50 pl-4 italic text-gray-600;
+    }
+    
+    img {
+        @apply rounded-lg shadow-sm;
+    }
+}
+
+.like-button.active svg {
+    fill: #1a8917;
+    stroke: #1a8917;
+    animation: like 0.4s ease-in-out;
+}
+
+@keyframes like {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.2); }
+    100% { transform: scale(1); }
+}

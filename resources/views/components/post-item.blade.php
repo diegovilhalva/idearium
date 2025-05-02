@@ -1,5 +1,5 @@
 <article class="bg-white overflow-hidden shadow-sm rounded-lg hover:shadow-md transition-shadow duration-200">
-    <a href="" class="block">
+    <a href="{{route('post.show',['username' => $post->user->username, 'post' => $post->slug])}}" class="block">
         @if($post->image)
         <img class="w-full h-48 object-cover" 
              src="{{  $post->image }}" 
@@ -23,7 +23,7 @@
             </time>
         </div>
         
-        <a href="">
+        <a href="{{route('post.show',['username' => $post->user->username, 'post' => $post->slug])}}">
             <h3 class="text-xl font-serif font-bold text-secondary mb-2 leading-tight">
                 {{ $post->title }}
             </h3>
@@ -34,7 +34,7 @@
         </p>
         
         <div class="flex items-center justify-between">
-            <a href="" 
+            <a href="{{route('post.show',['username' => $post->user->username, 'post' => $post->slug])}}" 
                class="inline-flex items-center text-primary hover:text-secondary transition-colors">
                 Ler artigo completo
                 <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">

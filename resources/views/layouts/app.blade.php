@@ -53,6 +53,9 @@
                                     d="M12 4v16m8-8H4" />
                             </svg>
                         </a>
+                        @auth
+                            
+                        
                         <!-- Settings Dropdown -->
                         <x-dropdown align="right" width="48">
                             <x-slot name="trigger">
@@ -85,8 +88,9 @@
                                 </form>
                             </x-slot>
                         </x-dropdown>
+                        @endauth
                     </div>
-
+                    
                     <!-- Hamburger Menu (Mobile) -->
                     <div class="-mr-2 flex items-center sm:hidden gap-4">
                         <div class="flex lg:hidden md:hidden justify-center items-center space-x-5">
@@ -99,6 +103,7 @@
                                 </svg>
                             </a>
                         </div>
+                        @auth
                         <button @click="open = !open"
                             class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 focus:text-gray-500 transition">
                             <svg class="h-6 w-6" stroke="currentColor" fill="none" viewBox="0 0 24 24">
@@ -110,11 +115,13 @@
                                     d="M6 18L18 6M6 6l12 12" />
                             </svg>
                         </button>
+                        @endauth
                     </div>
                 </div>
             </div>
 
             <!-- Responsive Navigation Menu -->
+            @auth
             <div class="sm:hidden" x-show="open" @click.away="open = false">
 
 
@@ -142,7 +149,10 @@
                     </div>
                 </div>
             </div>
-
+            @endauth
+            @guest
+                
+            @endguest
         </nav>
 
         <!-- Page Content -->

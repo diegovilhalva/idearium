@@ -27,7 +27,7 @@
 
                         <div class="flex-1">
                             <div class="flex items-center gap-3 mb-1">
-                                <a href="#" class="font-medium text-gray-900 hover:text-primary transition-colors">
+                                <a href="{{route('profile.show',['user' => $post->user->username])}}" class="font-medium text-gray-900 hover:text-primary transition-colors">
                                     {{ $post->user->name }}
                                 </a>
                                 <button class="px-3 py-1 text-sm bg-primary/10 text-primary rounded-full hover:bg-primary/20 transition-colors">

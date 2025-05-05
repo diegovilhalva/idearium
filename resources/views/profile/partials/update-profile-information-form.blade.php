@@ -88,7 +88,7 @@
                         <img 
                             src="{{ $user->image ?: 'https://ui-avatars.com/api/?name='.urlencode($user->name).'&color=1a8917&background=e5f5e8' }}" 
                             alt="Foto atual" 
-                            class="w-12 h-12 object-cover"
+                            class="w-full h-full object-cover"
                         >
                     </div>
                     <div class="absolute inset-0 bg-black/50 rounded-full opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">

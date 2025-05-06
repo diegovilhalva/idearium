@@ -3,9 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Models\Category;
+use App\Models\Like;
 use App\Models\Post;
 use Illuminate\Http\Request;
 use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
+use Illuminate\Support\Facades\Auth;
+
 class PostController extends Controller
 {
     /**
@@ -13,11 +16,11 @@ class PostController extends Controller
      */
     public function index()
     {
-       
+
         $posts = Post::with(['category'])
-        ->whereNotNull('published_at')
-        ->latest('published_at')
-        ->paginate(9);
+            ->whereNotNull('published_at')
+            ->latest('published_at')
+            ->paginate(9);
         return view('post.index', ['posts' => $posts]);
     }
 
@@ -26,14 +29,14 @@ class PostController extends Controller
      */
     public function create()
     {
-        $categories = Category::get(); 
-        return view('post.create',['categories' => $categories]);
+        $categories = Category::get();
+        return view('post.create', ['categories' => $categories]);
     }
 
     /**
      * Store a newly created resource in storage.
      */
-  
+
 
     public function store(Request $request)
     {
@@ -44,37 +47,37 @@ class PostController extends Controller
             'published_at' => 'required|date',
             'image' => 'nullable|image|max:2048',
         ]);
-    
+
         $imageUrl = null;
-    
+
         if ($request->hasFile('image')) {
-            
+
             $uploadedFile = Cloudinary::uploadApi()->upload(
                 $request->file('image')->getRealPath(),
                 ['folder' => 'idearium/posts']
             );
-    
-            $imageUrl = $uploadedFile['secure_url']; 
+
+            $imageUrl = $uploadedFile['secure_url'];
         }
-    
+        
         Post::create([
             'title' => $request->title,
             'content' => $request->content,
             'category_id' => $request->category_id,
             'published_at' => $request->published_at,
             'image' => $imageUrl,
-            'user_id' => auth()->id(),
+            'user_id' => Auth::id(),
         ]);
-    
+
         return redirect()->route('dashboard')->with('success', 'Post criado com sucesso!');
     }
-    
+
     /**
      * Display the specified resource.
      */
     public function show(string $username, Post $post)
     {
-        return view('post.show',[
+        return view('post.show', [
             'post' => $post
         ]);
     }
@@ -94,6 +97,28 @@ class PostController extends Controller
     {
         //
     }
+
+    public function toggleLike(Post $post)
+    {
+        /** @var \App\Models\User $user */
+
+        $user = Auth::user();
+
+        $like = Like::where('post_id', $post->id)->where('user_id', $user->id)->first();
+
+        if ($like) {
+            $like->delete();
+            return response()->json(['liked' => false, 'likes_count' => $post->likes()->count()]);
+        }
+
+        Like::create([
+            'post_id' => $post->id,
+            'user_id' => $user->id,
+        ]);
+
+        return response()->json(['liked' => true, 'likes_count' => $post->likes()->count()]);
+    }
+
 
     /**
      * Remove the specified resource from storage.

@@ -19,6 +19,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('/post', [PostController::class, 'store'])->name('post.store');
     Route::get('/@{username}/{post:slug}',[PostController::class,'show'])->name('post.show');
     Route::post('/follow/{user:username}',[FollowerController::class,'followUnfollow'])->name('follow');
+    Route::post('/posts/{post}/like', [PostController::class, 'toggleLike'])->name('post.like');
 });
 
 

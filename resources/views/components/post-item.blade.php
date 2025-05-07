@@ -13,7 +13,7 @@
     
     <div class="p-6">
         <div class="mb-3 flex items-center justify-between">
-            <a href="" 
+            <a href="{{route('post.byCategory',$post->category->slug)}}" 
                class="text-sm text-primary hover:text-secondary transition-colors">
                 {{ $post->category->name }}
             </a>

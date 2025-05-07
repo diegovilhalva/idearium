@@ -21,7 +21,7 @@ class PostController extends Controller
             ->whereNotNull('published_at')
             ->latest('published_at')
             ->paginate(9);
-        return view('post.index', ['posts' => $posts]);
+        return view('post.index', ['posts' => $posts,'active' => null]);
     }
 
     /**
@@ -130,4 +130,22 @@ class PostController extends Controller
     {
         //
     }
+
+    public function category($slug)
+    {
+        if ($slug === 'tudo' || $slug === '') {
+            $posts = Post::latest()->paginate(9);
+        } else {
+            $category = Category::where('slug', $slug)->firstOrFail();
+            $posts = $category->posts()->paginate(9);
+        }
+    
+        return view('post.index', [
+            'posts' => $posts,
+            'categories' => Category::all(),
+            'active' => $slug
+        ]);
+    }
+    
+    
 }

@@ -5,7 +5,9 @@
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6">
                     <h2 class="text-2xl font-serif font-bold text-secondary mb-4">Explore por Categorias</h2>
-                    <x-category-list/>
+                
+                        <x-category-list :active="$active" />
+                
                 </div>
             </div>
 

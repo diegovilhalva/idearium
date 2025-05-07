@@ -81,7 +81,7 @@
 
                     <div class="mt-12 flex items-center gap-2">
                         <span class="text-gray-500">Publicado em:</span>
-                        <a href=""
+                        <a href="{{route('post.byCategory',$post->category->slug)}}"
                             class="px-4 py-2 bg-primary/10 text-primary rounded-full hover:bg-primary/20 transition-colors">
                             {{ $post->category->name }}
                         </a>

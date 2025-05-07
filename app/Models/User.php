@@ -51,7 +51,7 @@ class User extends Authenticatable implements MustVerifyEmail
             'password' => 'hashed',
         ];
     }
-    
+
     public function posts()
     {
         return $this->hasMany(Post::class);
@@ -59,13 +59,12 @@ class User extends Authenticatable implements MustVerifyEmail
 
     public function following()
     {
-        return $this->belongsToMany(User::class,'followers','user_id','follower_id');
+        return $this->belongsToMany(User::class, 'followers', 'user_id', 'follower_id');
     }
 
     public function followers()
     {
         return $this->belongsToMany(User::class, 'followers', 'user_id', 'follower_id');
-    
     }
 
     public function isFollowedBy(?User $user)
@@ -74,5 +73,10 @@ class User extends Authenticatable implements MustVerifyEmail
             return false;
         }
         return $this->followers()->where('follower_id', $user->id)->exists();
+    }
+
+    public function comments()
+    {
+        return $this->hasMany(Comment::class);
     }
 }

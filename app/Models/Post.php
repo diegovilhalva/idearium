@@ -1,6 +1,6 @@
 <?php
 
-  
+
 
 namespace App\Models;
 
@@ -19,13 +19,12 @@ class Post extends Model
         'published_at',
     ];
 
-    
+
     protected static function booted()
     {
         static::creating(function ($post) {
             if (empty($post->slug)) {
-               $post->slug = Str::slug($post->title) . '-' . uniqid();
-
+                $post->slug = Str::slug($post->title) . '-' . uniqid();
             }
         });
     }
@@ -39,17 +38,23 @@ class Post extends Model
         return $this->hasMany(Like::class);
     }
 
+
     public function user()
     {
         return $this->belongsTo(User::class);
     }
 
+    public function comments()
+    {
+        return $this->hasMany(Comment::class)->latest();
+    }
+
+
     public function readTime($wordsPerMinute = 200)
     {
-        $wordCount =str_word_count(strip_tags($this->content));
+        $wordCount = str_word_count(strip_tags($this->content));
         $minutes = ceil($wordCount / $wordsPerMinute);
 
         return $minutes;
     }
 }
-

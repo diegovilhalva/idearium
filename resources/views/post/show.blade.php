@@ -6,13 +6,15 @@
                 <article class="bg-white shadow-sm sm:rounded-lg p-6 md:p-8">
                     {{-- Cabeçalho do Post --}}
                     <header class="mb-8">
-                        <h1 class="text-3xl md:text-4xl lg:text-5xl font-serif font-bold text-secondary leading-tight mb-6">
+                        <h1
+                            class="text-3xl md:text-4xl lg:text-5xl font-serif font-bold text-secondary leading-tight mb-6">
                             {{ $post->title }}
                         </h1>
 
                         {{-- Autor e Metadados --}}
                         <div class="flex items-center gap-4 mb-6">
-                            <a href="{{ route('profile.show', ['user' => $post->user->username]) }}" class="flex-shrink-0">
+                            <a href="{{ route('profile.show', ['user' => $post->user->username]) }}"
+                                class="flex-shrink-0">
                                 @if ($post->user->image)
                                     <img src="{{ $post->user->image }}" alt="{{ $post->user->name }}"
                                         class="w-12 h-12 rounded-full object-cover ring-2 ring-primary/30 hover:ring-primary/50 transition-all">
@@ -35,24 +37,20 @@
                                                 console.log(err)
                                             })
                                     }
-                                }"
-                                >
+                                }">
                                     <a href="{{ route('profile.show', ['user' => $post->user->username]) }}"
                                         class="font-medium text-gray-900 hover:text-primary transition-colors">
                                         {{ $post->user->name }}
                                     </a>
                                     @auth
                                         @if (auth()->id() !== $post->user->id)
-                                            
-                                                <button 
-                                                    class="px-3 py-1 text-sm rounded-full transition-colors"
-                                                    :class="following ?    'bg-gray-200 text-gray-800 hover:bg-gray-300'
-                    : 'bg-primary/10 text-primary hover:bg-primary/20'"
-                    @click="follow()"
-                    >
+                                            <button class="px-3 py-1 text-sm rounded-full transition-colors"
+                                                :class="following ? 'bg-gray-200 text-gray-800 hover:bg-gray-300' :
+                                                    'bg-primary/10 text-primary hover:bg-primary/20'"
+                                                @click="follow()">
                                                 <span x-text="following ? 'Deixar de seguir' : 'Seguir'"></span>
-                                                </button>
-                                        @endif  
+                                            </button>
+                                        @endif
 
                                     @endauth
 
@@ -94,8 +92,7 @@
                             <div class="flex items-center gap-4">
                                 {{-- Likes --}}
                                 @auth
-                                <button 
-                                    x-data="{
+                                    <button x-data="{
                                         liked: @json($post->likes->contains('user_id', auth()->id())),
                                         count: {{ $post->likes->count() }},
                                         toggleLike() {
@@ -106,26 +103,23 @@
                                                 })
                                                 .catch(error => console.error(error))
                                         }
-                                    }"
-                                    @click.prevent="toggleLike()"
-                                    class="like-button group flex items-center gap-2 transition-colors"
-                                    :class="liked ? 'text-primary' : 'text-gray-600 hover:text-primary'"
-                                >
-                                    <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
-                                        <path
-                                            d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 
-                                               2 5.42 4.42 3 7.5 3c1.74 0 3.41 0.81 
-                                               4.5 2.09C13.09 3.81 14.76 3 16.5 3 
-                                               19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 
-                                               11.54L12 21.35z"
-                                        />
-                                    </svg>
-                                    <span class="like-count text-sm font-medium" x-text="count"></span>
-                                </button>
-                            @endauth
-                            
+                                    }" @click.prevent="toggleLike()"
+                                        class="like-button group flex items-center gap-2 transition-colors"
+                                        :class="liked ? 'text-primary' : 'text-gray-600 hover:text-primary'">
+                                        <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                                            <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5
+                                                   2 5.42 4.42 3 7.5 3c1.74 0 3.41 0.81
+                                                   4.5 2.09C13.09 3.81 14.76 3 16.5 3
+                                                   19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55
+                                                   11.54L12 21.35z" />
+                                        </svg>
+                                        <span class="like-count text-sm font-medium" x-text="count"></span>
+                                    </button>
+                                @endauth
+
                                 {{-- Shares --}}
-                                <button class="flex items-center gap-2 text-gray-600 hover:text-primary transition-colors">
+                                <button
+                                    class="flex items-center gap-2 text-gray-600 hover:text-primary transition-colors">
                                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                             d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />
@@ -133,12 +127,13 @@
                                     <span>2.3k</span>
                                 </button>
                                 {{-- Cometários --}}
-                                <button class="flex items-center gap-2 text-gray-600 hover:text-primary transition-colors">
+                                <button
+                                    class="flex items-center gap-2 text-gray-600 hover:text-primary transition-colors">
                                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                             d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
                                     </svg>
-                                    <span>45 Comentários</span>
+                                    <span>{{$comments->count()}} Comentários</span>
                                 </button>
                             </div>
 
@@ -164,10 +159,14 @@
 
                 {{-- Seção de Comentários (opcional) --}}
                 <div class="mt-12 bg-white shadow-sm sm:rounded-lg p-6 md:p-8">
+                  
                     <h2 class="text-2xl font-serif font-bold text-secondary mb-6">
-                        Comentários (45)
+                        Comentários ({{$comments->count()}})
                     </h2>
-                    {{-- Aqui viriam os comentários --}}
+                   
+
+                    <x-post-comments :post="$post" :comments="$comments" />
+
                 </div>
             </div>
         </div>

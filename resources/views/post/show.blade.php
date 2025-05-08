@@ -28,16 +28,19 @@
                             </a>
 
                             <div class="flex-1">
+
                                 <div class="flex items-center gap-3 mb-1" x-data="{
-                                    following: @json($post->user->isFollowedBy(auth()->user())),
+                                    following: {{ auth()->check() ? json_encode($post->user->isFollowedBy(auth()->user())) : 'false' }},
+                                    username: {{ auth()->check() ? "'" . auth()->user()->username . "'" : 'null' }},
                                     follow() {
-                                        this.following = !this.following
-                                        axios.post('/follow/{{ auth()->user()->username }}').then(res => res)
-                                            .catch(err => {
-                                                console.log(err)
-                                            })
+                                        if (!this.username) return;
+                                        this.following = !this.following;
+                                        axios.post(`/follow/${this.username}`)
+                                            .then(res => res)
+                                            .catch(err => console.log(err));
                                     }
                                 }">
+
                                     <a href="{{ route('profile.show', ['user' => $post->user->username]) }}"
                                         class="font-medium text-gray-900 hover:text-primary transition-colors">
                                         {{ $post->user->name }}
@@ -81,7 +84,7 @@
 
                     <div class="mt-12 flex items-center gap-2">
                         <span class="text-gray-500">Publicado em:</span>
-                        <a href="{{route('post.byCategory',$post->category->slug)}}"
+                        <a href="{{ route('post.byCategory', $post->category->slug) }}"
                             class="px-4 py-2 bg-primary/10 text-primary rounded-full hover:bg-primary/20 transition-colors">
                             {{ $post->category->name }}
                         </a>
@@ -108,10 +111,10 @@
                                         :class="liked ? 'text-primary' : 'text-gray-600 hover:text-primary'">
                                         <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
                                             <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5
-                                                   2 5.42 4.42 3 7.5 3c1.74 0 3.41 0.81
-                                                   4.5 2.09C13.09 3.81 14.76 3 16.5 3
-                                                   19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55
-                                                   11.54L12 21.35z" />
+                                                       2 5.42 4.42 3 7.5 3c1.74 0 3.41 0.81
+                                                       4.5 2.09C13.09 3.81 14.76 3 16.5 3
+                                                       19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55
+                                                       11.54L12 21.35z" />
                                         </svg>
                                         <span class="like-count text-sm font-medium" x-text="count"></span>
                                     </button>
@@ -133,7 +136,7 @@
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                             d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
                                     </svg>
-                                    <span>{{$comments->count()}} Comentários</span>
+                                    <span>{{ $comments->count() }} Comentários</span>
                                 </button>
                             </div>
 
@@ -159,11 +162,11 @@
 
                 {{-- Seção de Comentários (opcional) --}}
                 <div class="mt-12 bg-white shadow-sm sm:rounded-lg p-6 md:p-8">
-                  
+
                     <h2 class="text-2xl font-serif font-bold text-secondary mb-6">
-                        Comentários ({{$comments->count()}})
+                        Comentários ({{ $comments->count() }})
                     </h2>
-                   
+
 
                     <x-post-comments :post="$post" :comments="$comments" />
 

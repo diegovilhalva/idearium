@@ -1,7 +1,5 @@
 <?php
 
-
-
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
@@ -16,9 +14,9 @@ class Post extends Model
         'category_id',
         'user_id',
         'image',
+        'image_public_id', // <-- novo campo adicionado
         'published_at',
     ];
-
 
     protected static function booted()
     {
@@ -33,11 +31,11 @@ class Post extends Model
     {
         return $this->belongsTo(Category::class);
     }
+
     public function likes()
     {
         return $this->hasMany(Like::class);
     }
-
 
     public function user()
     {
@@ -48,7 +46,6 @@ class Post extends Model
     {
         return $this->hasMany(Comment::class)->latest();
     }
-
 
     public function readTime($wordsPerMinute = 200)
     {

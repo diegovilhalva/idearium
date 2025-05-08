@@ -8,10 +8,13 @@ use App\Models\Post;
 use Illuminate\Http\Request;
 use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+
 
 class PostController extends Controller
 {
-    /**
+    use AuthorizesRequests;
+    /*
      * Display a listing of the resource.
      */
     public function index()
@@ -21,7 +24,7 @@ class PostController extends Controller
             ->whereNotNull('published_at')
             ->latest('published_at')
             ->paginate(9);
-        return view('post.index', ['posts' => $posts,'active' => null]);
+        return view('post.index', ['posts' => $posts, 'active' => null]);
     }
 
     /**
@@ -49,6 +52,7 @@ class PostController extends Controller
         ]);
 
         $imageUrl = null;
+        $publicId = null;
 
         if ($request->hasFile('image')) {
 
@@ -58,14 +62,16 @@ class PostController extends Controller
             );
 
             $imageUrl = $uploadedFile['secure_url'];
+            $publicId = $uploadedFile['public_id'];
         }
-        
+
         Post::create([
             'title' => $request->title,
             'content' => $request->content,
             'category_id' => $request->category_id,
             'published_at' => $request->published_at,
             'image' => $imageUrl,
+            'image_public_id' => $publicId,
             'user_id' => Auth::id(),
         ]);
 
@@ -90,7 +96,8 @@ class PostController extends Controller
      */
     public function edit(Post $post)
     {
-        //
+        $this->authorize('update', $post); 
+        return view('post.edit', compact('post'));
     }
 
     /**
@@ -98,12 +105,23 @@ class PostController extends Controller
      */
     public function update(Request $request, Post $post)
     {
-        //
+        $this->authorize('update', $post);
+    
+        $validated = $request->validate([
+            'title' => 'required|string|max:255',
+            'content' => 'required|string',
+        ]);
+    
+        $post->update($validated);
+    
+        return redirect()->route('post.show', [$post->user->username, $post])
+            ->with('success', 'Post atualizado com sucesso!');
     }
+    
 
     public function toggleLike(Post $post)
     {
-        
+
 
         $user = Auth::user();
 
@@ -128,8 +146,17 @@ class PostController extends Controller
      */
     public function destroy(Post $post)
     {
-        //
+        $this->authorize('delete', $post);
+    
+        if ($post->image_public_id) {
+            Cloudinary::uploadApi()->destroy($post->image_public_id);
+        }
+    
+        $post->delete();
+    
+        return redirect()->route('post.mine')->with('success', 'Post deletado com sucesso.');
     }
+    
 
     public function category($slug)
     {
@@ -139,13 +166,17 @@ class PostController extends Controller
             $category = Category::where('slug', $slug)->firstOrFail();
             $posts = $category->posts()->paginate(9);
         }
-    
+
         return view('post.index', [
             'posts' => $posts,
             'categories' => Category::all(),
             'active' => $slug
         ]);
     }
-    
-    
+
+    public function userPosts()
+    {
+        $posts = auth()->user()->posts()->latest()->paginate(10);
+        return view('post.mine', compact('posts'));
+    }
 }

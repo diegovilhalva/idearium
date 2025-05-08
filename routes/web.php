@@ -17,6 +17,8 @@ Route::get('/posts/{post:id}/comments', [CommentController::class, 'index'])->na
 Route::get('/', [PostController::class, 'index'])->name('dashboard');
 Route::get('/@{username}/{post:slug}',[PostController::class,'show'])->name('post.show');
 Route::get('/category/{slug}',[PostController::class,'category'])->name('post.byCategory');
+Route::get('/search', [PostController::class, 'search'])->name('post.search');
+
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/post/create', [PostController::class, 'create'])->name('post.create');

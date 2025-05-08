@@ -43,8 +43,18 @@
 
 
 
+
                     <!-- Navigation Links -->
                     <div class="hidden sm:flex sm:items-center space-x-6 gap-2">
+                        <form action="{{ route('post.search') }}" method="GET" class="relative">
+                            <input type="text" name="search" placeholder="Buscar posts..."
+                                class="rounded-full border border-gray-300 px-4 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary" />
+                            <button type="submit"
+                                class="absolute right-2 top-1/2 -translate-y-1/2 text-gray-500 hover:text-primary">
+                               
+                            </button>
+                        </form>
+
                         <a href="{{ route('post.create') }}"
                             class=" bg-primary text-white p-3 rounded-full shadow-lg hover:bg-primary/90 transition-all duration-300 z-50">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24"
@@ -53,6 +63,7 @@
                                     d="M12 4v16m8-8H4" />
                             </svg>
                         </a>
+
 
                         @guest
                             <a href="{{ route('login') }}"
@@ -78,7 +89,7 @@
                             ">
                                 Registrar
                             </a>
-                        @endguest   
+                        @endguest
 
 
 
@@ -135,8 +146,8 @@
                                 </svg>
                             </a>
                             @guest
-                            <a href="{{ route('login') }}"
-                                class="
+                                <a href="{{ route('login') }}"
+                                    class="
                                 text-sm md:text-base
                                 bg-transparent md:bg-transparent
                                 text-secondary hover:text-primary 
@@ -144,12 +155,12 @@
                                 rounded-full md:rounded-none
                                 transition
                             ">
-                                <span class="hidden md:inline">Fazer Login</span>
-                                <span class="md:hidden">Login</span>
-                            </a>
+                                    <span class="hidden md:inline">Fazer Login</span>
+                                    <span class="md:hidden">Login</span>
+                                </a>
 
-                            <a href="{{ route('register') }}"
-                                class="
+                                <a href="{{ route('register') }}"
+                                    class="
                                 text-sm md:text-base
                                 bg-primary text-white 
                                 px-4 py-2 
@@ -157,64 +168,74 @@
                                 hover:bg-[#156612] 
                                 transition
                             ">
-                                Registrar
-                            </a>
+                                    Registrar
+                                </a>
                             @endguest
                         </div>
 
-                        @auth
-                            <button @click="open = !open"
-                                class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 focus:text-gray-500 transition">
-                                <svg class="h-6 w-6" stroke="currentColor" fill="none" viewBox="0 0 24 24">
-                                    <path :class="{ 'hidden': open, 'inline-flex': !open }" class="inline-flex"
-                                        stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M4 6h16M4 12h16M4 18h16" />
-                                    <path :class="{ 'hidden': !open, 'inline-flex': open }" class="hidden"
-                                        stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M6 18L18 6M6 6l12 12" />
-                                </svg>
-                            </button>
-                        @endauth
+
+                        <button @click="open = !open"
+                            class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 focus:text-gray-500 transition">
+                            <svg class="h-6 w-6" stroke="currentColor" fill="none" viewBox="0 0 24 24">
+                                <path :class="{ 'hidden': open, 'inline-flex': !open }" class="inline-flex"
+                                    stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M4 6h16M4 12h16M4 18h16" />
+                                <path :class="{ 'hidden': !open, 'inline-flex': open }" class="hidden"
+                                    stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M6 18L18 6M6 6l12 12" />
+                            </svg>
+                        </button>
+
                     </div>
                 </div>
             </div>
 
             <!-- Responsive Navigation Menu -->
-            @auth
-                <div class="sm:hidden" x-show="open" @click.away="open = false">
+
+            <div class="sm:hidden" x-show="open" @click.away="open = false">
 
 
-                    <!-- Responsive Settings Options -->
-                    <div class="pt-4 pb-1 border-t border-gray-200">
+                <!-- Responsive Settings Options -->
+                <div class="pt-4 pb-1 border-t border-gray-200">
+                    @auth
                         <div class="px-4">
                             <div class="font-medium text-base text-gray-800">{{ Auth::user()->name }}</div>
                             <div class="font-medium text-sm text-gray-500">{{ Auth::user()->email }}</div>
                         </div>
+                    @endauth
 
-                        <div class="mt-3 space-y-1">
-                            <x-responsive-nav-link href="{{ route('profile.edit') }}">
-                                {{ __('Profile') }}
-                            </x-responsive-nav-link>
-                            <x-responsive-nav-link href="{{ route('post.mine') }}">
-                                Meus posts
-                            </x-responsive-nav-link>
 
-                            <!-- Authentication -->
-                            <form method="POST" action="{{ route('logout') }}">
-                                @csrf
-                                <x-responsive-nav-link href="{{ route('logout') }}"
-                                    onclick="event.preventDefault();
-                                                    this.closest('form').submit();">
-                                    {{ __('Log Out') }}
-                                </x-responsive-nav-link>
-                            </form>
-                        </div>
+                    <div class="mt-3 space-y-1">
+                        <form action="{{ route('post.search') }}" method="GET" class="px-4 pb-3">
+                            <input type="text" name="search" placeholder="Buscar posts..."
+                                class="w-full rounded-full border border-gray-300 px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary" />
+                        </form>
+
+
+                        @auth
+                        <x-responsive-nav-link href="{{ route('profile.edit') }}">
+                            {{ __('Profile') }}
+                        </x-responsive-nav-link>
+                        <x-responsive-nav-link href="{{ route('post.mine') }}">
+                            Meus posts
+                        </x-responsive-nav-link>
+                        @endauth
+                         <!-- Authentication -->
+                            @auth
+                                <form method="POST" action="{{ route('logout') }}">
+                                    @csrf
+                                    <x-responsive-nav-link href="{{ route('logout') }}"
+                                        onclick="event.preventDefault();
+                                                this.closest('form').submit();">
+                                        {{ __('Log Out') }}
+                                    </x-responsive-nav-link>
+                                </form>
+                            @endauth
                     </div>
                 </div>
-            @endauth
-            @guest
+            </div>
 
-            @endguest
+
         </nav>
 
         <!-- Page Content -->

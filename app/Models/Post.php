@@ -14,8 +14,7 @@ class Post extends Model
         'category_id',
         'user_id',
         'image',
-        'image_public_id', // <-- novo campo adicionado
-        'published_at',
+        'image_public_id', 
     ];
 
     protected static function booted()

@@ -96,7 +96,7 @@ class PostController extends Controller
      */
     public function edit(Post $post)
     {
-        $this->authorize('update', $post); 
+        $this->authorize('update', $post);
         return view('post.edit', compact('post'));
     }
 
@@ -106,18 +106,18 @@ class PostController extends Controller
     public function update(Request $request, Post $post)
     {
         $this->authorize('update', $post);
-    
+
         $validated = $request->validate([
             'title' => 'required|string|max:255',
             'content' => 'required|string',
         ]);
-    
+
         $post->update($validated);
-    
+
         return redirect()->route('post.show', [$post->user->username, $post])
             ->with('success', 'Post atualizado com sucesso!');
     }
-    
+
 
     public function toggleLike(Post $post)
     {
@@ -147,16 +147,16 @@ class PostController extends Controller
     public function destroy(Post $post)
     {
         $this->authorize('delete', $post);
-    
+
         if ($post->image_public_id) {
             Cloudinary::uploadApi()->destroy($post->image_public_id);
         }
-    
+
         $post->delete();
-    
+
         return redirect()->route('post.mine')->with('success', 'Post deletado com sucesso.');
     }
-    
+
 
     public function category($slug)
     {
@@ -173,6 +173,23 @@ class PostController extends Controller
             'active' => $slug
         ]);
     }
+
+    public function search(Request $request)
+    {
+        $search = $request->input('search');
+
+        $posts = Post::when($search, function ($query, $search) {
+            $query->where('title', 'like', '%' . $search . '%')
+                ->orWhere('content', 'like', '%' . $search . '%');
+        })->latest()->paginate(9);
+
+        return view('post.index', [
+            'posts' => $posts,
+            'categories' => Category::all(),
+            'active' => null
+        ]);
+    }
+
 
     public function userPosts()
     {
